@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'login.dart';
 import 'signup.dart';
+import 'getpage.dart';
 
 
 void main() {

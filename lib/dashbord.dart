@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/Appointments.dart';
 import 'package:mobile_project/Profil.dart';
+import 'SearchPage.dart';
+import 'getpage.dart';
+
 
 class Dashbord extends StatelessWidget {
   @override
@@ -57,41 +60,49 @@ class Dashbord extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:const EdgeInsets.all(20.0),
+                padding:const EdgeInsets.only(top:40),
                 child: Center(
                   child:Wrap(
                     spacing:20.0,
                     runSpacing: 20.0,
                     children: [
-                      SizedBox(
-                        width: 160.0,
-                        height: 160.0,
-                        child:Card(
-                            elevation: 8.0,
-                            shape:RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)
-                            ),
-                          child:Center(
-                            child:Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Image.asset("assets/house.png",width:80.0),
-                                  SizedBox(height: 16.0),
-                                  Text("House Cleaning",style: TextStyle(
-                                    color:Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  )),
+                      MaterialButton(
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => UsersScreen()));
+                          },
+                        child:SizedBox(
+                            width: 160.0,
+                            height: 160.0,
+                            child:Card(
+                                elevation: 8.0,
+                                shape:RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0)
+                                ),
+                                child:Center(
+                                    child:Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset("assets/house.png",width:80.0),
+                                          SizedBox(height: 16.0),
+                                          Text("House Cleaning",style: TextStyle(
+                                            color:Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15.0,
+                                          )),
 
-                                ],
-                              ),
+                                        ],
+                                      ),
+                                    )
+
+                                )
                             )
-
-                          )
-                        )
+                        ),
                       ),
-                      SizedBox(
+                      MaterialButton(
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => UsersScreen()));
+                          },
+                          child:SizedBox(
                           width: 160.0,
                           height: 160.0,
                           child:Card(
@@ -119,66 +130,73 @@ class Dashbord extends StatelessWidget {
                               )
                           )
                       ),
-                      SizedBox(
-                          width: 160.0,
-                          height: 160.0,
-                          child:Card(
-                              elevation: 8.0,
-                              shape:RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0)
-                              ),
-                              child:Center(
-                                  child:Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset("assets/after.png",width:85.0),
-                                        SizedBox(height: 16.0),
-                                        Text("After Renovation",style: TextStyle(
-                                          color:Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15.0,
-                                        )),
+              ),
+                      MaterialButton(
+                        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => UsersScreen()));
+                        },
+                        child:SizedBox(
+                            width: 160.0,
+                            height: 160.0,
+                            child:Card(
+                                elevation: 8.0,
+                                shape:RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0)
+                                ),
+                                child:Center(
+                                    child:Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset("assets/after.png",width:85.0),
+                                          SizedBox(height: 16.0),
+                                          Text("After Renovation",style: TextStyle(
+                                            color:Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15.0,
+                                          )),
 
-                                      ],
-                                    ),
-                                  )
+                                        ],
+                                      ),
+                                    )
 
-                              )
-                          )
+                                )
+                            )
+                        ),
                       ),
-                      SizedBox(
-                          width: 160.0,
-                          height: 160.0,
-                          child:Card(
-                              elevation: 8.0,
-                              shape:RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0)
-                              ),
-                              child:Center(
-                                  child:Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset("assets/eventclean.png",width:80.0),
-                                        SizedBox(height: 16.0),
-                                        Text("After Event",style: TextStyle(
-                                          color:Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15.0,
-                                        )),
+                      MaterialButton(
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => UsersScreen()));
+                          },
+                          child:SizedBox(
+                              width: 160.0,
+                              height: 160.0,
+                              child:Card(
+                                  elevation: 8.0,
+                                  shape:RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0)
+                                  ),
+                                  child:Center(
+                                      child:Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Image.asset("assets/eventclean.png",width:80.0),
+                                            SizedBox(height: 16.0),
+                                            Text("After Event",style: TextStyle(
+                                              color:Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15.0,
+                                            )),
 
-                                      ],
-                                    ),
+                                          ],
+                                        ),
+                                      )
+
                                   )
-
                               )
-                          )
-                      )
+                          ),
 
-
+                      ),
                     ],
-
                   )
                 ),
               )
@@ -201,16 +219,12 @@ class Dashbord extends StatelessWidget {
                       ),
                       IconButton(
                         icon:Icon(Icons.list),
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentsPage() ));
+                        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Appointments() ));
                         },
                       ),
                       IconButton(
                         icon:Icon(Icons.person),
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage() ));
-
-                        },
+                        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage() ));},
                       ),
                       IconButton(
                         icon:Icon(Icons.settings),
