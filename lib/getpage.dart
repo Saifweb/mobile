@@ -4,9 +4,42 @@ import 'package:flutter/material.dart';
 import 'package:mobile_project/Appointments.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_project/Calendar.dart';
+import 'package:mobile_project/Favorie.dart';
 import 'package:mobile_project/Profil.dart';
+import 'package:mobile_project/dashbord.dart';
+import 'package:mobile_project/updatemail.dart';
+import 'package:mobile_project/updatepass.dart';
+import 'globals.dart' as globals;
 
 List data = [];
+var Fav = [];
+List AuthUser = [];
+
+AddFav(BuildContext context, fav) async {
+  var url = "https://mobilebackend.onrender.com/api/addfav";
+  try {
+    final response = await http.put(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'fav': fav,
+      }),
+    );
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FavoritePage()));
+      // If the server did return a 200 OK response,
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      print("ola !");
+    }
+  } catch (er) {
+    print("ola !");
+  }
+}
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({Key? key}) : super(key: key);
@@ -16,25 +49,67 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
+
+  getUser() async {
+    var url = "https://mobilebackend.onrender.com/api/myprofil";
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      AuthUser = json.decode(response.body);
+      print(AuthUser[0]["name"]);
+      Fav=AuthUser[0]["fav"];
+      print(Fav);
+    } else {
+      print("e");
+    }
+  }
+
+  // This list holds the data for the list view
+
   Future<List> getData() async {
     final response = await http
         .get(Uri.parse('https://mobilebackend.onrender.com/api/users'));
-    data = json.decode(response.body);
+    if (response.statusCode == 200) {
+      data = json.decode(response.body);
+    }
     return data;
+  }
+
+  List _foundUsers = data;
+
+  // This function is called whenever the text field changes
+  void _runFilter(String enteredKeyword) async {
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      await (10);
+      results = data;
+    } else {
+      results = data
+          .where((user) =>
+              user["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundUsers = results;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    getUser();
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromRGBO(0, 0, 128, 1),
+          backgroundColor: Color.fromARGB(255, 7, 97, 171),
           onPressed: () {},
           child: const Icon(Icons.add)),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(0, 0, 128, 1),
+        backgroundColor: Color.fromARGB(255, 7, 97, 171),
         title: const Text("House Keeper"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        centerTitle: true,
       ),
       body: FutureBuilder<List<dynamic>>(
         future: getData(),
@@ -44,186 +119,253 @@ class _UsersScreenState extends State<UsersScreen> {
               child: const CircularProgressIndicator(),
             );
           } else {
-            return ListView.builder(
-                padding: EdgeInsets.only(top: 40, bottom: 60),
-                itemCount: data.length == 0 ? 0 : data.length,
-                itemBuilder: (context, index) {
-                  return Center(
-                      child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                height: 150,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.blue,
-                                        Color.fromRGBO(0, 0, 150, 1)
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.blue,
-                                        blurRadius: 12,
-                                        offset: Offset(0, 6),
-                                      )
-                                    ]),
-                              ),
-                              Positioned.fill(
-                                child: MaterialButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CalendarPage()));
-                                  },
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(100.0),
-                                            child: Image.asset(
-                                              'assets/person.png',
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                        ),
-                                        flex: 2,
-                                      ),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  data[index]["name"],
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Avenir',
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  data[index]["state"],
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Avenir',
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 10),
-                                            Row(
-                                              children: <Widget>[
-                                                Icon(Icons.location_on,
-                                                    color: Colors.white,
-                                                    size: 16),
-                                                Text(
-                                                  data[index]["location"],
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Avenir',
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextField(
+                    onChanged: (value) => _runFilter(value),
+                    decoration: InputDecoration(
+                        labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      padding: EdgeInsets.all(15),
+                      itemCount:
+                          _foundUsers.length == 0 ? 0 : _foundUsers.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 28,
+                              backgroundImage: NetworkImage(
+                                  "https://firebasestorage.googleapis.com/v0/b/mobileproject-ee2ad.appspot.com/o/258606681_2573591256117688_6924124459095621389_n.jpg?alt=media&token=db204ef0-7f3e-4770-be6b-c51727db4c0c"),
+                            ),
+                            title: Text(_foundUsers[index]["name"]),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 10),
+                                Text(_foundUsers[index]["location"]),
+                                SizedBox(
+                                    height:
+                                        10), // Add some spacing between the sub titles
+                                Text(_foundUsers[index]["phoneNumber"]),
+                                SizedBox(
+                                    height:
+                                        10), // Add some spacing between the sub titles
+                                Text(_foundUsers[index]["age"]),
+                                SizedBox(height: 10),
+                                Visibility(
+                                  visible: _foundUsers[index]["rate"] == 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          children: [
                                             Text(
-                                              "4.7",
+                                              "New",
                                               style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Avenir',
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 35.0),
-                                              child: Row(
-                                                children:
-                                                    List.generate(1, (index) {
-                                                  return Icon(Icons.star,
-                                                      color: Colors.white);
-                                                }),
-                                              ),
+                                                  color: Colors.blueAccent),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                    ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )));
-                });
+                                Visibility(
+                                  visible: _foundUsers[index]["rate"] != 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 0),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "${_foundUsers[index]["rate"]}",
+                                              style: TextStyle(
+                                                  color: Colors.blueAccent),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Icon(Icons.star,
+                                                color: Colors.blueAccent,
+                                                size: 15)
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+// Add some spacing between the sub titles
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    AddFav(context, _foundUsers[index]["id"]);
+                                  },
+                                  icon: Fav.contains(_foundUsers[index]["id"])
+                                      ? const Icon(Icons.favorite,
+                                      color: Colors.red)
+                                      : const Icon(Icons.favorite_border),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              globals.id = data[index]["id"];
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CalendarPage()));
+                            },
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            );
           }
         },
       ),
       bottomNavigationBar: BottomAppBar(
+
           shape: const CircularNotchedRectangle(),
-          color: Color.fromRGBO(0, 0, 128, 1),
+
+          color:Color.fromARGB(255, 7, 97, 171),
+
           child: IconTheme(
+
               data: IconThemeData(
+
                   color: Theme.of(context).colorScheme.onSecondary),
+
               child: Padding(
+
                   padding: const EdgeInsets.all(10.0),
+
                   child: Row(
+
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                     children: [
+
                       IconButton(
+
                         icon: Icon(Icons.home),
-                        onPressed: () {},
+
+                        onPressed: () {      Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => Dashbord()));},
+
                       ),
+
                       IconButton(
+
                         icon: Icon(Icons.list),
+
                         onPressed: () {
+
                           Navigator.push(
+
                               context,
+
                               MaterialPageRoute(
+
                                   builder: (context) => Appointments()));
+
                         },
+
                       ),
+
                       IconButton(
+
                         icon: Icon(Icons.person),
+
                         onPressed: () {
+
                           Navigator.push(
+
                               context,
+
                               MaterialPageRoute(
+
                                   builder: (context) => ProfilePage()));
+
                         },
+
                       ),
+
                       IconButton(
+
                         icon: Icon(Icons.settings),
-                        onPressed: () {},
+
+                        onPressed: () {
+                          showDialog(
+
+                            context: context,
+
+                            builder: (context) {
+
+                              return AlertDialog(
+
+                                title: Text(
+
+                                    'Settings'),
+
+                                content:Row(
+                                  children: [
+                                    TextButton(onPressed: () {  Navigator.push(
+
+                                        context,
+
+                                        MaterialPageRoute(
+
+                                            builder: (context) => UpdateUserE())); }, child: Text("Update Password")),
+                                    TextButton(onPressed: () {Navigator.push(
+
+                                        context,
+
+                                        MaterialPageRoute(
+
+                                            builder: (context) => UpdateUserP()));}, child: Text("Update Email")),
+
+                                  ],
+                                ),
+
+                                actions: <Widget>[
+
+                                  TextButton(
+
+                                    child: Text("Close"),
+
+                                    onPressed: () {
+                                      Navigator.pop(context);
+
+                                    },
+
+                                  ),
+
+                                ],
+
+                              );
+
+                            },
+
+                          );
+                        },
+
                       ),
+
                     ],
+
                   )))),
     );
   }

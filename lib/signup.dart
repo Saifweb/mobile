@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/SearchPage.dart';
-
+import 'dart:ui';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobile_project/dashbord.dart';
 
+var currentStep = 0;
 Future<User> createUser(
   BuildContext context,
   String name,
   String email,
   String state,
+  String phoneNumber,
+  String location,
   String password,
   String confirmpassword,
+  String age,
 ) async {
   if (password != confirmpassword) {
     throw Exception('Wrong password');
@@ -27,7 +31,10 @@ Future<User> createUser(
           'name': name,
           'email': email,
           'state': state,
+          'location': location,
+          'phoneNumber': phoneNumber,
           'password': password,
+          'age': age,
         }),
       );
       if (response.statusCode == 200) {
@@ -40,7 +47,7 @@ Future<User> createUser(
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
-        throw Exception('Failed to signup.');
+        throw Exception(response.body);
       }
     } catch (e) {
       showDialog(
@@ -55,7 +62,7 @@ Future<User> createUser(
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Close'),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -104,6 +111,9 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _confirmpasswordcontroller =
       TextEditingController();
   final TextEditingController _statecontroller = TextEditingController();
+  final TextEditingController _locationcontroller = TextEditingController();
+  final TextEditingController _phoneNumbercontroller = TextEditingController();
+  final TextEditingController _agecontroller = TextEditingController();
 
   Future<User>? _futureUser;
 
@@ -113,9 +123,11 @@ class _SignupPageState extends State<SignupPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        title: Text("Signup"),
+        centerTitle: true,
         elevation: 0,
         brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff0054FF),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -123,117 +135,150 @@ class _SignupPageState extends State<SignupPage> {
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height / 7,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/logo.png"))),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 40, left: 40, bottom: 160),
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        controller: _namecontroller,
-                        decoration:
-                            const InputDecoration(hintText: 'Full Name'),
-                      ),
-                      TextField(
-                        controller: _emailcontroller,
-                        decoration:
-                            const InputDecoration(hintText: 'Enter Email'),
-                      ),
-                      TextField(
-                        controller: _statecontroller,
-                        decoration:
-                            const InputDecoration(hintText: 'Enter State'),
-                      ),
-                      TextField(
-                        controller: _passwordcontroller,
-                        decoration:
-                            const InputDecoration(hintText: 'Enter Password'),
-                      ),
-                      TextField(
-                        controller: _confirmpasswordcontroller,
-                        decoration:
-                            const InputDecoration(hintText: 'Confirm Password'),
-                      ),
-                      // inputFile(label: "Full Name",),
-                      // inputFile(label: "Email"),
-                      // inputFile(label: "State"),
-                      // inputFile(label: "Password", obscureText: true),
-                      // inputFile(label: "Confirm Password", obscureText: true),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 40, left: 40, bottom: 80),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 3, left: 3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+      body: Column(
+        children: [
+          Expanded(
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                  colorScheme: ColorScheme.light(primary: Color(0xff0054FF))),
+              child: Stepper(
+                controlsBuilder: ((context, details) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 50),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: ElevatedButton(
+                          child: Text("Next"),
+                          onPressed: details.onStepContinue,
+                        )),
+                        const SizedBox(width: 12),
+                        if (currentStep != 0)
+                          Expanded(
+                              child: ElevatedButton(
+                            child: Text("Cancel"),
+                            onPressed: details.onStepCancel,
+                          )),
+                      ],
                     ),
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      color: Color(0xff0054FF),
-                      onPressed: () {
-                        print("making log in");
-
-                        print(_emailcontroller.text);
-                        print(_namecontroller.text);
-                        print(_passwordcontroller.text);
-                        print(_statecontroller.text);
-
-                        print(_confirmpasswordcontroller.text);
-
-                        setState(() {
-                          _futureUser = createUser(
-                              context,
-                              _namecontroller.text,
-                              _emailcontroller.text,
-                              _statecontroller.text,
-                              _confirmpasswordcontroller.text,
-                              _passwordcontroller.text);
-                        });
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage() ));
-                      },
-                      // defining the shape
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Color(0xff0054FF),
-                          ),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Text("Register",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18)),
-                    ),
-                  ),
-                ),
-              ],
-            ))
-          ],
-        ),
+                  );
+                }),
+                type: StepperType.horizontal,
+                steps: getSteps(
+                    _namecontroller,
+                    _emailcontroller,
+                    _statecontroller,
+                    _phoneNumbercontroller,
+                    _locationcontroller,
+                    _passwordcontroller,
+                    _confirmpasswordcontroller,
+                    _agecontroller),
+                currentStep: currentStep,
+                onStepContinue: () {
+                  setState(() {
+                    if (currentStep != 2) {
+                      currentStep += 1;
+                    } else {
+                      //send Data!
+                      _futureUser = createUser(
+                          context,
+                          _namecontroller.text,
+                          _emailcontroller.text,
+                          _statecontroller.text,
+                          _phoneNumbercontroller.text,
+                          _locationcontroller.text,
+                          _passwordcontroller.text,
+                          _confirmpasswordcontroller.text,
+                          _agecontroller.text);
+                    }
+                  });
+                },
+                onStepCancel: () {
+                  setState(() {
+                    if (currentStep != 0) {
+                      currentStep -= 1;
+                    }
+                  });
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+        ],
       ),
     );
   }
 }
+
+List<Step> getSteps(
+        _namecontroller,
+        _emailcontroller,
+        _statecontroller,
+        _phoneNumbercontroller,
+        _locationcontroller,
+        _passwordcontroller,
+        _confirmpasswordcontroller,
+        _agecontroller) =>
+    [
+      Step(
+          isActive: currentStep >= 0,
+          title: Text("Step 1"),
+          content: Column(
+            children: <Widget>[
+              TextField(
+                controller: _namecontroller,
+                decoration: const InputDecoration(hintText: 'Full Name'),
+              ),
+              TextField(
+                controller: _emailcontroller,
+                decoration: const InputDecoration(hintText: 'Enter Email'),
+              ),
+              TextField(
+                controller: _statecontroller,
+                decoration: const InputDecoration(hintText: 'Enter State'),
+              ),
+            ],
+          )),
+      Step(
+          isActive: currentStep >= 1,
+          title: Text("Step 2"),
+          content: Column(
+            children: <Widget>[
+              TextField(
+                controller: _locationcontroller,
+                decoration: const InputDecoration(hintText: 'Enter Location'),
+              ),
+              TextField(
+                controller: _phoneNumbercontroller,
+                decoration:
+                    const InputDecoration(hintText: 'Enter phoneNumber'),
+              ),
+              TextField(
+                controller: _agecontroller,
+                decoration: const InputDecoration(hintText: 'Enter age'),
+              ),
+            ],
+          )),
+      Step(
+          isActive: currentStep >= 2,
+          title: Text("Step 3"),
+          content: Column(
+            children: <Widget>[
+              TextField(
+                controller: _passwordcontroller,
+                decoration: const InputDecoration(hintText: 'Enter Password'),
+              ),
+              TextField(
+                controller: _confirmpasswordcontroller,
+                decoration: const InputDecoration(hintText: 'Confirm Password'),
+              ),
+            ],
+          )),
+    ];
 
 // we will be creating a widget for text field
 Widget inputFile({
