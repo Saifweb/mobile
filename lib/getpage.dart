@@ -49,14 +49,13 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-
   getUser() async {
     var url = "https://mobilebackend.onrender.com/api/myprofil";
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       AuthUser = json.decode(response.body);
       print(AuthUser[0]["name"]);
-      Fav=AuthUser[0]["fav"];
+      Fav = AuthUser[0]["fav"];
       print(Fav);
     } else {
       print("e");
@@ -104,8 +103,11 @@ class _UsersScreenState extends State<UsersScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
           backgroundColor: Color.fromARGB(255, 7, 97, 171),
-          onPressed: () {},
-          child: const Icon(Icons.add)),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FavoritePage()));
+          },
+          child: const Icon(Icons.favorite)),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 7, 97, 171),
         title: const Text("House Keeper"),
@@ -215,7 +217,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                   },
                                   icon: Fav.contains(_foundUsers[index]["id"])
                                       ? const Icon(Icons.favorite,
-                                      color: Colors.red)
+                                          color: Colors.red)
                                       : const Icon(Icons.favorite_border),
                                 ),
                               ],
@@ -237,135 +239,87 @@ class _UsersScreenState extends State<UsersScreen> {
         },
       ),
       bottomNavigationBar: BottomAppBar(
-
           shape: const CircularNotchedRectangle(),
-
-          color:Color.fromARGB(255, 7, 97, 171),
-
+          color: Color.fromARGB(255, 7, 97, 171),
           child: IconTheme(
-
               data: IconThemeData(
-
                   color: Theme.of(context).colorScheme.onSecondary),
-
               child: Padding(
-
                   padding: const EdgeInsets.all(10.0),
-
                   child: Row(
-
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                     children: [
-
                       IconButton(
-
                         icon: Icon(Icons.home),
-
-                        onPressed: () {      Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => Dashbord()));},
-
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dashbord()));
+                        },
                       ),
-
                       IconButton(
-
                         icon: Icon(Icons.list),
-
                         onPressed: () {
-
                           Navigator.push(
-
                               context,
-
                               MaterialPageRoute(
-
                                   builder: (context) => Appointments()));
-
                         },
-
                       ),
-
                       IconButton(
-
                         icon: Icon(Icons.person),
-
                         onPressed: () {
-
                           Navigator.push(
-
                               context,
-
                               MaterialPageRoute(
-
                                   builder: (context) => ProfilePage()));
-
                         },
-
                       ),
-
                       IconButton(
-
                         icon: Icon(Icons.settings),
-
                         onPressed: () {
                           showDialog(
-
                             context: context,
-
                             builder: (context) {
-
                               return AlertDialog(
-
-                                title: Text(
-
-                                    'Settings'),
-
-                                content:Row(
+                                title: Text('Settings'),
+                                content: Row(
                                   children: [
-                                    TextButton(onPressed: () {  Navigator.push(
-
-                                        context,
-
-                                        MaterialPageRoute(
-
-                                            builder: (context) => UpdateUserE())); }, child: Text("Update Password")),
-                                    TextButton(onPressed: () {Navigator.push(
-
-                                        context,
-
-                                        MaterialPageRoute(
-
-                                            builder: (context) => UpdateUserP()));}, child: Text("Update Email")),
-
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateUserE()));
+                                        },
+                                        child: Text("Update Password")),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateUserP()));
+                                        },
+                                        child: Text("Update Email")),
                                   ],
                                 ),
-
                                 actions: <Widget>[
-
                                   TextButton(
-
                                     child: Text("Close"),
-
                                     onPressed: () {
                                       Navigator.pop(context);
-
                                     },
-
                                   ),
-
                                 ],
-
                               );
-
                             },
-
                           );
                         },
-
                       ),
-
                     ],
-
                   )))),
     );
   }

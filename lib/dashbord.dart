@@ -31,10 +31,13 @@ class Dashbord extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
           backgroundColor: Color.fromARGB(255, 7, 97, 171),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FavoritePage()));
+          },
           child: const Icon(Icons.favorite)),
       appBar: AppBar(
-        backgroundColor:Color.fromARGB(255, 7, 97, 171),
+        backgroundColor: Color.fromARGB(255, 7, 97, 171),
         title: const Text("Dashbord"),
         centerTitle: true,
         actions: [],
