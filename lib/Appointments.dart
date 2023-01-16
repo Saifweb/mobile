@@ -157,9 +157,7 @@ class _AppointmentsState extends State<Appointments> {
           );
         },
       );
-    } else {
-      throw Exception('ouh ya !');
-    }
+    } else {}
   }
 
   @override
