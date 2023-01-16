@@ -34,10 +34,10 @@ AddFav(BuildContext context, fav) async {
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
-      print("ola !");
+      print("error");
     }
   } catch (er) {
-    print("ola !");
+    print("error");
   }
 }
 
@@ -143,7 +143,8 @@ class _UsersScreenState extends State<UsersScreen> {
                             leading: CircleAvatar(
                               radius: 28,
                               backgroundImage: NetworkImage(
-                                  "https://firebasestorage.googleapis.com/v0/b/mobileproject-ee2ad.appspot.com/o/258606681_2573591256117688_6924124459095621389_n.jpg?alt=media&token=db204ef0-7f3e-4770-be6b-c51727db4c0c"),
+                                "https://www.pngitem.com/pimgs/m/111-1114839_circle-people-icon-flat-png-avatar-icon-transparent.png",
+                              ),
                             ),
                             title: Text(_foundUsers[index]["name"]),
                             subtitle: Column(
@@ -292,7 +293,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserE()));
+                                                      UpdateUserP()));
                                         },
                                         child: Text("Update Password")),
                                     TextButton(
@@ -301,7 +302,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserP()));
+                                                      UpdateUserE()));
                                         },
                                         child: Text("Update Email")),
                                   ],

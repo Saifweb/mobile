@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/dashbord.dart';
+import 'package:mobile_project/signup.dart';
 import 'globals.dart' as globals;
 import 'dart:async';
 import 'dart:convert';
@@ -29,7 +30,32 @@ Future<User> createUser(
           context, MaterialPageRoute(builder: (context) => Dashbord()));
       return User(email: response.body, password: response.body);
     }
-    return User(email: response.body, password: response.body);
+    else{
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(
+              response.body,
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return User(email: response.body, password: response.body);
+
+    }
   } catch (e) {
     showDialog(
       context: context,
@@ -128,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                             const InputDecoration(hintText: 'Enter Email'),
                       ),
                       TextField(
+                        obscureText: true,
                         controller: _passwordcontroller,
                         decoration:
                             const InputDecoration(hintText: 'Enter Password'),
@@ -194,11 +221,19 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text("Don't have an account?"),
-                    Text(
-                      " Sign up",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                    MaterialButton(
+                      onPressed: (() {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignupPage()));
+                      }),
+                      child: Text(
+                        " Sign up",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
                       ),
                     )
                   ],

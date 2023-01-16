@@ -16,12 +16,9 @@ import 'globals.dart' as globals;
 
 var currentStep = 0;
 
-var items = [
-  'housekeeper',
-  'customer',
-];
+var _selectedValue;
 
-String dropdownvalue = 'housekeeper';
+final _stateController = TextEditingController();
 
 Future<User> createUser(
   BuildContext context,
@@ -35,7 +32,29 @@ Future<User> createUser(
   String age,
 ) async {
   if (password != confirmpassword) {
-    print("hello");
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(
+            "Password No Match !",
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+
     return User(email: "", password: "", name: "", state: "");
   } else {
     try {
@@ -66,7 +85,28 @@ Future<User> createUser(
 
         return User(email: "", password: "", name: "", state: "");
       } else {
-        // If the server did not return a 201 CREATED response,
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text(
+                response.body,
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        ); // If the server did not return a 201 CREATED response,
 
         // then throw an exception.
 
@@ -141,8 +181,6 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _confirmpasswordcontroller =
       TextEditingController();
 
-  String _statecontroller = 'housekeeper';
-
   final TextEditingController _locationcontroller = TextEditingController();
 
   final TextEditingController _phoneNumbercontroller = TextEditingController();
@@ -176,6 +214,26 @@ class _SignupPageState extends State<SignupPage> {
                   decoration: const InputDecoration(hintText: 'Enter Email'),
                 ),
 
+                TextField(
+                  controller: _stateController,
+                ),
+                DropdownButton<String>(
+                  value: _selectedValue,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedValue = newValue;
+                    });
+                    _stateController.text = newValue!;
+                  },
+                  items: <String>['housekeeper', 'customer']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+
                 // TextField(
 
                 //   controller: _statecontroller,
@@ -183,43 +241,6 @@ class _SignupPageState extends State<SignupPage> {
                 //   decoration: const InputDecoration(hintText: 'Enter State'),
 
                 // ),
-
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.height * 0.08,
-                      child: DropdownButton(
-                        // Initial Value
-
-                        value: dropdownvalue,
-
-                        iconEnabledColor: Colors.white,
-
-                        // Array list of items
-
-                        items: items.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-
-                        // After selecting the desired option,it will
-
-                        // change button value to selected value
-
-                        onChanged: (String? newValue) {
-                          _statecontroller = newValue;
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                    Icon(Icons.keyboard_arrow_down)
-                  ],
-                ),
               ],
             )),
         Step(
@@ -248,13 +269,16 @@ class _SignupPageState extends State<SignupPage> {
             content: Column(
               children: <Widget>[
                 TextField(
+                  obscureText: true,
                   controller: _passwordcontroller,
-                  decoration: const InputDecoration(hintText: 'Enter Password'),
+                  decoration: const InputDecoration(
+                      labelText: 'Password', hintText: 'Enter Password'),
                 ),
                 TextField(
+                  obscureText: true,
                   controller: _confirmpasswordcontroller,
-                  decoration:
-                      const InputDecoration(hintText: 'Confirm Password'),
+                  decoration: const InputDecoration(
+                      labelText: 'Password', hintText: 'Confirm Password'),
                 ),
               ],
             )),
@@ -352,7 +376,7 @@ class _SignupPageState extends State<SignupPage> {
                 steps: getSteps(
                     _namecontroller,
                     _emailcontroller,
-                    _statecontroller,
+                    _stateController,
                     _phoneNumbercontroller,
                     _locationcontroller,
                     _passwordcontroller,
@@ -372,7 +396,7 @@ class _SignupPageState extends State<SignupPage> {
                           context,
                           _namecontroller.text,
                           _emailcontroller.text,
-                          _statecontroller,
+                          _stateController.text,
                           _phoneNumbercontroller.text,
                           _locationcontroller.text,
                           _passwordcontroller.text,

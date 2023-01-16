@@ -466,7 +466,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserE()));
+                                                      UpdateUserP()));
                                         },
                                         child: Text("Update Password")),
                                     TextButton(
@@ -475,7 +475,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserP()));
+                                                      UpdateUserE()));
                                         },
                                         child: Text("Update Email")),
                                   ],

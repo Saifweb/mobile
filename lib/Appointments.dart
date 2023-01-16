@@ -98,16 +98,30 @@ class Appointments extends StatefulWidget {
 class _AppointmentsState extends State<Appointments> {
   //getdata
   Future<List> getData() async {
-    print(global.User[0]["user"]["uid"]);
-    user_id = global.User[0]["user"]["uid"];
+    //print(global.User[0]["user"]["uid"]);
+    //user_id = global.User[0]["user"]["uid"];
     print(user_id);
 
     final response = await http
         .get(Uri.parse('https://mobilebackend.onrender.com/api/reservations'));
-
-    data = json.decode(response.body);
-
+    if (response.statusCode==200){
+      data = json.decode(response.body);
+    }
     return data;
+  }
+
+  Future<List> getmyProfil() async {
+    final response = await http
+        .get(Uri.parse('https://mobilebackend.onrender.com/api/myprofil'));
+
+    if (response.statusCode == 200) {
+      var ME = json.decode(response.body);
+      user_id = ME[0]["id"];
+    }
+
+    print(user_id);
+
+    return data.toList();
   }
 
   getUser(User_id) async {
@@ -162,6 +176,7 @@ class _AppointmentsState extends State<Appointments> {
 
   @override
   Widget build(BuildContext context) {
+    getmyProfil();
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -221,58 +236,71 @@ class _AppointmentsState extends State<Appointments> {
                                             fontWeight: FontWeight.w600,
                                             fontSize: 18)),
                                   )),
+                              SizedBox(height: 10,),
 
-                              Padding(
-                                  padding: const EdgeInsets.only(top: 50.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text("Start date",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black45,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                        )),
-                                  )),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 70.0),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Location : ${data[index]["location"]}   || ",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15,
+                                            )),
+                                      )),
+                                  SizedBox(width:10,),
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 70.0),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Price: ${data[index]["price"]}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15,
+                                            )),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(height: 20,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 110.0),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text( "${data[index]["start_date"]}-",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                            )),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 110.0),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(data[index]["end_date"],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                            )),
+                                      )),
 
-                              Padding(
-                                  padding: const EdgeInsets.only(top: 70.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(data[index]["start_date"],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                        )),
-                                  )),
+                                ],
+                              ),
 
-                              Padding(
-                                  padding: const EdgeInsets.only(top: 90.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text("End Time",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black45,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                        )),
-                                  )),
 
-                              Padding(
-                                  padding: const EdgeInsets.only(top: 110.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(data[index]["end_date"],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                        )),
-                                  )),
 
                               Padding(
                                   padding: EdgeInsets.only(top: 120.0),
@@ -523,7 +551,7 @@ class _AppointmentsState extends State<Appointments> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserE()));
+                                                      UpdateUserP()));
                                         },
                                         child: Text("Update Password")),
                                     TextButton(
@@ -532,7 +560,7 @@ class _AppointmentsState extends State<Appointments> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserP()));
+                                                      UpdateUserE()));
                                         },
                                         child: Text("Update Email")),
                                   ],

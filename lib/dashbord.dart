@@ -355,7 +355,7 @@ class Dashbord extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserE()));
+                                                      UpdateUserP()));
                                         },
                                         child: Text("Update Password")),
                                     TextButton(
@@ -364,7 +364,7 @@ class Dashbord extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateUserP()));
+                                                      UpdateUserE()));
                                         },
                                         child: Text("Update Email")),
                                   ],

@@ -24,7 +24,9 @@ class _HistoryState extends State<History> {
   Future<List> getData() async {
     final response = await http.get(
         Uri.parse('https://mobilebackend.onrender.com/api/reservations_done'));
-    data = json.decode(response.body);
+    if (response.statusCode==200){
+      data = json.decode(response.body);
+    }
     return data;
   }
 
@@ -99,9 +101,7 @@ class _HistoryState extends State<History> {
           );
         },
       );
-    } else {
-      throw Exception('ouh ya !');
-    }
+    } else {}
   }
 
   @override
@@ -217,56 +217,69 @@ class _HistoryState extends State<History> {
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18)),
                                     )),
+                                SizedBox(height: 10,),
 
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 50.0),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text("cleaning date",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                          )),
-                                    )),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 70.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("Location : ${data[index]["location"]}   || ",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                              )),
+                                        )),
+                                    SizedBox(width:10,),
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 70.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("Price: ${data[index]["price"]}",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                              )),
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 110.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text( "${data[index]["start_date"]}-",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 10,
+                                              )),
+                                        )),
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 110.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(data[index]["end_date"],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 10,
+                                              )),
+                                        )),
 
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 70.0),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(data[index]["start_date"],
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                          )),
-                                    )),
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 90.0),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text("End Date",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                          )),
-                                    )),
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 110.0),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(data[index]["end_date"],
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                          )),
-                                    )),
+                                  ],
+                                ),
 
                                 //buttons
 
@@ -296,135 +309,87 @@ class _HistoryState extends State<History> {
             }
           }),
       bottomNavigationBar: BottomAppBar(
-
           shape: const CircularNotchedRectangle(),
-
           color: Color.fromARGB(255, 7, 97, 171),
-
           child: IconTheme(
-
               data: IconThemeData(
-
                   color: Theme.of(context).colorScheme.onSecondary),
-
               child: Padding(
-
                   padding: const EdgeInsets.all(10.0),
-
                   child: Row(
-
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                     children: [
-
                       IconButton(
-
                         icon: Icon(Icons.home),
-
-                        onPressed: () {      Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => Dashbord()));},
-
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dashbord()));
+                        },
                       ),
-
                       IconButton(
-
                         icon: Icon(Icons.list),
-
                         onPressed: () {
-
                           Navigator.push(
-
                               context,
-
                               MaterialPageRoute(
-
                                   builder: (context) => Appointments()));
-
                         },
-
                       ),
-
                       IconButton(
-
                         icon: Icon(Icons.person),
-
                         onPressed: () {
-
                           Navigator.push(
-
                               context,
-
                               MaterialPageRoute(
-
                                   builder: (context) => ProfilePage()));
-
                         },
-
                       ),
-
                       IconButton(
-
                         icon: Icon(Icons.settings),
-
                         onPressed: () {
                           showDialog(
-
                             context: context,
-
                             builder: (context) {
-
                               return AlertDialog(
-
-                                title: Text(
-
-                                    'Settings'),
-
-                                content:Row(
+                                title: Text('Settings'),
+                                content: Row(
                                   children: [
-                                    TextButton(onPressed: () {  Navigator.push(
-
-                                        context,
-
-                                        MaterialPageRoute(
-
-                                            builder: (context) => UpdateUserE())); }, child: Text("Update Password")),
-                                    TextButton(onPressed: () {Navigator.push(
-
-                                        context,
-
-                                        MaterialPageRoute(
-
-                                            builder: (context) => UpdateUserP()));}, child: Text("Update Email")),
-
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateUserP()));
+                                        },
+                                        child: Text("Update Password")),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateUserE()));
+                                        },
+                                        child: Text("Update Email")),
                                   ],
                                 ),
-
                                 actions: <Widget>[
-
                                   TextButton(
-
                                     child: Text("Close"),
-
                                     onPressed: () {
                                       Navigator.pop(context);
-
                                     },
-
                                   ),
-
                                 ],
-
                               );
-
                             },
-
                           );
                         },
-
                       ),
-
                     ],
-
                   )))),
     );
   }

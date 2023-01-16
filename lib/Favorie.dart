@@ -5,6 +5,9 @@ import 'package:mobile_project/Appointments.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_project/Calendar.dart';
 import 'package:mobile_project/Profil.dart';
+import 'package:mobile_project/dashbord.dart';
+import 'package:mobile_project/updatemail.dart';
+import 'package:mobile_project/updatepass.dart';
 import 'globals.dart' as globals;
 
 class User {
@@ -67,7 +70,7 @@ class _FavoritePageState extends State<FavoritePage> {
           builder: (context, snapshot) {
             if (snapshot.data == null) {
               return Center(
-                child: Text("no Favorite !"),
+                child: const CircularProgressIndicator(),
               );
             } else {
               return ListView.builder(
@@ -79,7 +82,8 @@ class _FavoritePageState extends State<FavoritePage> {
                         leading: CircleAvatar(
                           radius: 28,
                           backgroundImage: NetworkImage(
-                              "https://firebasestorage.googleapis.com/v0/b/mobileproject-ee2ad.appspot.com/o/258606681_2573591256117688_6924124459095621389_n.jpg?alt=media&token=db204ef0-7f3e-4770-be6b-c51727db4c0c"),
+                            "https://www.pngitem.com/pimgs/m/111-1114839_circle-people-icon-flat-png-avatar-icon-transparent.png",
+                          ),
                         ),
                         title: Text(data[index]["name"]),
                         subtitle: Column(
@@ -181,7 +185,12 @@ class _FavoritePageState extends State<FavoritePage> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.home),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dashbord()));
+                        },
                       ),
                       IconButton(
                         icon: Icon(Icons.list),
@@ -203,7 +212,46 @@ class _FavoritePageState extends State<FavoritePage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.settings),
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Settings'),
+                                content: Row(
+                                  children: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateUserE()));
+                                        },
+                                        child: Text("Update Password")),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateUserP()));
+                                        },
+                                        child: Text("Update Email")),
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text("Close"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                       ),
                     ],
                   )))),
