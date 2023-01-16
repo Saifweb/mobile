@@ -95,10 +95,10 @@ class calenderAppointment {
 
   const calenderAppointment(
       {required this.price,
-        required this.location,
-        required this.comment,
-        required this.startDate,
-        required this.lastDate});
+      required this.location,
+      required this.comment,
+      required this.startDate,
+      required this.lastDate});
   factory calenderAppointment.fromJson(Map<String, dynamic> json) {
     return calenderAppointment(
       lastDate: json['lastDate'],
@@ -225,6 +225,10 @@ class _CalendarForm extends State<CalendarForm> {
                         _commentcontroller.text,
                         _lastDate,
                         _startDate);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Appointments()));
                   }
                 },
                 child: Text('Save'),
