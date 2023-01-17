@@ -38,8 +38,6 @@ ApproveApp(appointments_Id) async {
     );
 
     if (response.statusCode == 200) {
-      print("yesss it worked !");
-
       print(response.body);
 
       // If the server did return a 200 OK response,
@@ -61,8 +59,6 @@ RejectApp(appointments_Id) async {
 
   url = url + "/" + appointments_Id;
 
-  print(url);
-
   try {
     final response = await http.put(
       Uri.parse(url),
@@ -72,8 +68,6 @@ RejectApp(appointments_Id) async {
     );
 
     if (response.statusCode == 200) {
-      print("yesss it worked !");
-
       print(response.body);
 
       // If the server did return a 200 OK response,

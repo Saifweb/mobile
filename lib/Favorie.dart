@@ -32,10 +32,8 @@ Future<List> getdata() async {
       .get(Uri.parse('https://mobilebackend.onrender.com/api/getfav'));
   if (response.statusCode == 200) {
     data = json.decode(response.body);
-    print("this data ");
     print(data);
-  }
-  else{
+  } else {
     print(response.body);
     return data;
   }
@@ -58,7 +56,7 @@ class _FavoritePageState extends State<FavoritePage> {
           onPressed: () {},
           child: const Icon(Icons.favorite)),
       appBar: AppBar(
-        backgroundColor:Color.fromARGB(255, 7, 97, 171),
+        backgroundColor: Color.fromARGB(255, 7, 97, 171),
         title: const Text("Favorite"),
         centerTitle: true,
         actions: [],
@@ -110,8 +108,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                       children: [
                                         Text(
                                           "New",
-                                          style:
-                                              TextStyle(color: Colors.blueAccent),
+                                          style: TextStyle(
+                                              color: Colors.blueAccent),
                                         ),
                                       ],
                                     )
@@ -129,8 +127,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                       children: [
                                         Text(
                                           "${data[index]["rate"]}",
-                                          style:
-                                              TextStyle(color: Colors.blueAccent),
+                                          style: TextStyle(
+                                              color: Colors.blueAccent),
                                         ),
                                       ],
                                     ),
@@ -153,7 +151,8 @@ class _FavoritePageState extends State<FavoritePage> {
                             IconButton(
                               onPressed: () {},
                               icon: true
-                                  ? const Icon(Icons.favorite, color: Colors.red)
+                                  ? const Icon(Icons.favorite,
+                                      color: Colors.red)
                                   : const Icon(Icons.favorite_border),
                             ),
                           ],

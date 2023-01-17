@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/Appointments.dart';
+import 'package:mobile_project/ChatsHome.dart';
 import 'package:mobile_project/Favorie.dart';
 import 'package:mobile_project/Profil.dart';
 import 'package:mobile_project/updatemail.dart';
@@ -40,7 +41,15 @@ class Dashbord extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 7, 97, 171),
         title: const Text("Dashbord"),
         centerTitle: true,
-        actions: [],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.chat_outlined),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ChatsHome()));
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<dynamic>>(
         future: getData(),

@@ -92,8 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       if (response.statusCode == 200) {
-        print("yesss it worked !");
-
         logout = true;
       } else {
         // If the server did not return a 201 CREATED response,
@@ -122,8 +120,6 @@ class _ProfilePageState extends State<ProfilePage> {
         );
 
         if (response.statusCode == 200) {
-          print("yesss it worked !");
-
           logout = true;
         } else {
           // If the server did not return a 201 CREATED response,
@@ -140,8 +136,6 @@ class _ProfilePageState extends State<ProfilePage> {
     print(logout);
 
     if (logout == true) {
-      print('dkhalt');
-
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -270,14 +264,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           Text(
                             data[0]['name'],
                             style: TextStyle(
-                              fontSize: 22.0,
+                              fontSize: 12.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             globals.email,
                             style: TextStyle(
-                              fontSize: 12.0,
+                              fontSize: 10.0,
                               color: Colors.grey[700],
                             ),
                           ),

@@ -24,7 +24,7 @@ class _HistoryState extends State<History> {
   Future<List> getData() async {
     final response = await http.get(
         Uri.parse('https://mobilebackend.onrender.com/api/reservations_done'));
-    if (response.statusCode==200){
+    if (response.statusCode == 200) {
       data = json.decode(response.body);
     }
     return data;
@@ -45,7 +45,6 @@ class _HistoryState extends State<History> {
         }),
       );
       if (response.statusCode == 200) {
-        print("yesss it worked !");
         print(response.body);
         // If the server did return a 200 OK response,
       } else {
@@ -217,16 +216,20 @@ class _HistoryState extends State<History> {
                                               fontWeight: FontWeight.w600,
                                               fontSize: 18)),
                                     )),
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
 
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
-                                        padding: const EdgeInsets.only(top: 70.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 70.0),
                                         child: Align(
                                           alignment: Alignment.center,
-                                          child: Text("Location : ${data[index]["location"]}   || ",
+                                          child: Text(
+                                              "Location : ${data[index]["location"]}   || ",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.black,
@@ -234,12 +237,16 @@ class _HistoryState extends State<History> {
                                                 fontSize: 15,
                                               )),
                                         )),
-                                    SizedBox(width:10,),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Padding(
-                                        padding: const EdgeInsets.only(top: 70.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 70.0),
                                         child: Align(
                                           alignment: Alignment.center,
-                                          child: Text("Price: ${data[index]["price"]}",
+                                          child: Text(
+                                              "Price: ${data[index]["price"]}",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.black,
@@ -249,15 +256,19 @@ class _HistoryState extends State<History> {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 20,),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
-                                        padding: const EdgeInsets.only(top: 110.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 110.0),
                                         child: Align(
                                           alignment: Alignment.center,
-                                          child: Text( "${data[index]["start_date"]}-",
+                                          child: Text(
+                                              "${data[index]["start_date"]}-",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.black,
@@ -266,7 +277,8 @@ class _HistoryState extends State<History> {
                                               )),
                                         )),
                                     Padding(
-                                        padding: const EdgeInsets.only(top: 110.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 110.0),
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(data[index]["end_date"],
@@ -277,7 +289,6 @@ class _HistoryState extends State<History> {
                                                 fontSize: 10,
                                               )),
                                         )),
-
                                   ],
                                 ),
 

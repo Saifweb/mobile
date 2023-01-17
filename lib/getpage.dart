@@ -140,7 +140,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
-                            leading: CircleAvatar(
+                            leading: const CircleAvatar(
                               radius: 28,
                               backgroundImage: NetworkImage(
                                 "https://www.pngitem.com/pimgs/m/111-1114839_circle-people-icon-flat-png-avatar-icon-transparent.png",

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:mobile_project/SearchPage.dart';
-
 import 'dart:ui';
 
 import 'dart:async';
