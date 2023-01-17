@@ -8,8 +8,9 @@ import 'package:intl/intl.dart';
 final firestore = FirebaseFirestore.instance;
 
 class ChatPage extends StatefulWidget {
-  final String id;
-  const ChatPage({Key? key, required this.id}) : super(key: key);
+  const ChatPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -20,10 +21,11 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo.shade400,
+      backgroundColor: Color.fromARGB(255, 7, 97, 171),
       appBar: AppBar(
-        backgroundColor: Colors.indigo.shade400,
-        title: const Text('John Doe'),
+        backgroundColor: Color.fromARGB(255, 7, 97, 171),
+        title: const Text('John Do'),
+        centerTitle: true,
         elevation: 0,
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
@@ -32,7 +34,6 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 50),
           Expanded(
             child: Container(
               decoration: Styles.friendsBox(),
@@ -44,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
                         List<QueryDocumentSnapshot?> allData = snapshot
                             .data!.docs
                             .where((element) =>
-                                element['users'].contains(widget.id) &&
+                                element['users'].contains(global.chatUserId) &&
                                 element['users']
                                     .contains(global.User[0]["user"]["uid"]))
                             .toList();
@@ -82,8 +83,8 @@ class _ChatPageState extends State<ChatPage> {
                         return Center(
                           child: Text(
                             'No conversion found',
-                            style: Styles.h1()
-                                .copyWith(color: Colors.indigo.shade400),
+                            style: Styles.h1().copyWith(
+                                color: Color.fromARGB(255, 69, 92, 225)),
                           ),
                         );
                       }
@@ -118,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                   'datatime': DateTime.now(),
                 };
                 firestore.collection('Rooms').add({
-                  'users': [widget.id, global.User[0]["user"]["uid"]],
+                  'users': [global.chatUserId, global.User[0]["user"]["uid"]],
                 }).then(
                   (value) async {
                     value.collection('messages').add(data);

@@ -7,5 +7,6 @@ String id = "";
 String email = "";
 String name = "";
 var rate;
-
+var reservation_id;
 var User;
+var chatUserId;

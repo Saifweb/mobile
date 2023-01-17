@@ -10,8 +10,10 @@ import 'package:mobile_project/Favorie.dart';
 import 'package:mobile_project/History.dart';
 
 import 'package:mobile_project/Profil.dart';
+import 'package:mobile_project/QrReader.dart';
 import 'package:mobile_project/updatemail.dart';
 import 'package:mobile_project/updatepass.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import 'dashbord.dart';
 
@@ -230,13 +232,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 //Stack Container
 
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.42,
+                  height: MediaQuery.of(context).size.height * 0.31,
                   child: Stack(children: [
                     Container(),
                     ClipPath(
                       clipper: MyCustomClipper(),
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.35,
+                        height: MediaQuery.of(context).size.height * 0.28,
                         color: colblue,
                       ),
                     ),
@@ -284,7 +286,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ]),
                 ),
-
+                SizedBox(
+                  height: 15,
+                ),
                 Container(
                   // height: MediaQuery.of(context).size.height * 0.48,
 
@@ -354,6 +358,51 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: <Widget>[
                                     Text(
                                       'history',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.0),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 21.0,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                IconButton(
+                                  onPressed: (() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => QRPage(
+                                                title:
+                                                    "Valid a finishing Appointement")));
+                                  }),
+                                  icon: Icon(
+                                    Icons.history,
+                                    size: 40.0,
+                                    color: colblue,
+                                  ),
+                                ),
+                                SizedBox(width: 24.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      'Scan',
                                       style: TextStyle(
                                         fontSize: 18.0,
                                       ),

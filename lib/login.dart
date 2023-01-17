@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/ChatPage.dart';
 import 'package:mobile_project/ChatsHome.dart';
+import 'package:mobile_project/UpdatePhoto.dart';
 import 'package:mobile_project/dashbord.dart';
 import 'package:mobile_project/signup.dart';
 import 'globals.dart' as globals;
@@ -31,8 +32,7 @@ Future<User> createUser(
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Dashbord()));
       return User(email: response.body, password: response.body);
-    }
-    else{
+    } else {
       showDialog(
         context: context,
         builder: (context) {
@@ -56,7 +56,6 @@ Future<User> createUser(
         },
       );
       return User(email: response.body, password: response.body);
-
     }
   } catch (e) {
     showDialog(

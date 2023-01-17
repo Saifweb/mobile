@@ -10,20 +10,20 @@ class Styles {
     return const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15), topRight: Radius.circular(15)));
+            topLeft: Radius.circular(0), topRight: Radius.circular(0)));
   }
 
   static messagesCardStyle(check) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      color: check ? Colors.indigo.shade300: Colors.grey.shade300,
+      color: check ? Color.fromARGB(255, 7, 97, 171) : Colors.grey.shade300,
     );
   }
 
   static messageFieldCardStyle() {
     return BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.indigo),
+        border: Border.all(color: Color.fromARGB(255, 7, 74, 129)),
         borderRadius: BorderRadius.circular(10));
   }
 
@@ -35,14 +35,17 @@ class Styles {
       suffixIcon: IconButton(onPressed: onSubmit, icon: const Icon(Icons.send)),
     );
   }
+
   static searchTextFieldStyle() {
     return InputDecoration(
       border: InputBorder.none,
       hintText: 'Enter Name',
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      suffixIcon: IconButton(onPressed: (){}, icon: const Icon(Icons.search_rounded)),
+      suffixIcon:
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded)),
     );
   }
+
   static searchField({Function(String)? onChange}) {
     return Container(
       margin: const EdgeInsets.all(10),

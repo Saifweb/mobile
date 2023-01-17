@@ -71,9 +71,7 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return const ChatPage(
-                                            id: '',
-                                          );
+                                          return const ChatPage();
                                         },
                                       ),
                                     );

@@ -88,7 +88,8 @@ class ChatWidgets {
               padding: const EdgeInsets.all(10),
               child: Text(
                 '$message',
-                style: TextStyle(color: check ? Colors.white : Colors.black),
+                style: TextStyle(
+                    color: check ? Colors.white : Colors.black, fontSize: 15),
               ),
               decoration: Styles.messagesCardStyle(check),
             ),
@@ -112,7 +113,7 @@ class ChatWidgets {
   static messageField({required onSubmit}) {
     final con = TextEditingController();
     return Container(
-      margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(8),
       child: TextField(
         controller: con,
         decoration: Styles.messageTextFieldStyle(onSubmit: () {

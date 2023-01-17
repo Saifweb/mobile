@@ -19,8 +19,8 @@ List data = [];
 var User_id;
 final firestore = FirebaseFirestore.instance;
 Future<List> getData() async {
-  final response =
-      await http.get(Uri.parse('https://mobilebackend.onrender.com/api/users'));
+  final response = await http
+      .get(Uri.parse('https://mobilebackend.onrender.com/api/allusers'));
   if (response.statusCode == 200) {
     data = json.decode(response.body);
   }
@@ -32,29 +32,14 @@ class _ChatsHomeState extends State<ChatsHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo.shade400,
+      backgroundColor: Color.fromARGB(255, 7, 97, 171),
       appBar: AppBar(
-        backgroundColor: Colors.indigo.shade400,
-        title: const Text('Flash Chat'),
+        backgroundColor: Color.fromARGB(255, 7, 97, 171),
+        title: const Text('Welcome to Chat Section !'),
         elevation: 0,
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    open == true ? open = false : open = true;
-                  });
-                },
-                icon: Icon(
-                  open == true ? Icons.close_rounded : Icons.search_rounded,
-                  size: 30,
-                )),
-          )
-        ],
+        actions: [],
       ),
-      drawer: ChatWidgets.drawer(),
       body: SafeArea(
         child: Stack(
           alignment: AlignmentDirectional.topEnd,
@@ -62,38 +47,6 @@ class _ChatsHomeState extends State<ChatsHome> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: const EdgeInsets.all(0),
-                  child: Container(
-                    color: Colors.indigo.shade400,
-                    padding: const EdgeInsets.all(8),
-                    height: 160,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 10),
-                          child: Text(
-                            'Recent Users',
-                            style: Styles.h1(),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          height: 80,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, i) {
-                              return ChatWidgets.circleProfile();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
@@ -101,12 +54,16 @@ class _ChatsHomeState extends State<ChatsHome> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
-                          child: Text(
-                            'Contacts',
-                            style: Styles.h1().copyWith(color: Colors.indigo),
+                        SizedBox(height: 20),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: Text(
+                              'Contacts',
+                              style: Styles.h1().copyWith(
+                                  color: Color.fromARGB(255, 7, 97, 171)),
+                            ),
                           ),
                         ),
                         Expanded(
@@ -121,14 +78,16 @@ class _ChatsHomeState extends State<ChatsHome> {
                                       itemBuilder: (context, index) {
                                         return ChatWidgets.card(
                                           title: data[index]['name'],
-                                          time: '04:40',
+                                          time: '',
                                           onTap: () {
+                                            global.chatUserId =
+                                                data[index]["id"];
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) {
                                                   return const ChatPage(
-                                                    id: "13zLtZRs6AZg5573tdJooqr7pqn1",
-                                                  );
+                                                      //id: "13zLtZRs6AZg5573tdJooqr7pqn1",
+                                                      );
                                                 },
                                               ),
                                             );

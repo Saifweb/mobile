@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:mobile_project/Appointments.dart';
 
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_project/Favorie.dart';
 
 import 'package:mobile_project/Profil.dart';
+import 'package:mobile_project/QrCode.dart';
 import 'package:mobile_project/dashbord.dart';
 import 'package:mobile_project/updatemail.dart';
 import 'package:mobile_project/updatepass.dart';
@@ -104,7 +106,7 @@ class _AppointmentsState extends State<Appointments> {
 
     final response = await http
         .get(Uri.parse('https://mobilebackend.onrender.com/api/reservations'));
-    if (response.statusCode==200){
+    if (response.statusCode == 200) {
       data = json.decode(response.body);
     }
     return data;
@@ -207,291 +209,327 @@ class _AppointmentsState extends State<Appointments> {
                   return Center(
                       child: Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                height: 200,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(0, 0, 128, 1),
-                                        blurRadius: 12,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ]),
-                              ),
+                          child: Slidable(
+                            startActionPane: ActionPane(
+                              motion: StretchMotion(),
+                              children: [
+                                Visibility(
+                                  visible:
+                                      data[index]["customer_id"] == user_id,
+                                  child: SlidableAction(
+                                    onPressed: ((context) async {
+                                      global.reservation_id =
+                                          await data[index]["id"];
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MyQR()));
+                                    }),
+                                    icon: Icons.qr_code_outlined,
+                                    label: 'Scan the code',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 128, 1),
+                                          blurRadius: 12,
+                                          offset: Offset(0, 2),
+                                        )
+                                      ]),
+                                ),
 
-                              //card content
+                                //card content
 
-                              Padding(
-                                  padding: const EdgeInsets.only(top: 25.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(data[index]["type"],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 18)),
-                                  )),
-                              SizedBox(height: 10,),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 70.0),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text("Location : ${data[index]["location"]}   || ",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 25.0),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(data[index]["type"],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 15,
-                                            )),
-                                      )),
-                                  SizedBox(width:10,),
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 70.0),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text("Price: ${data[index]["price"]}",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15,
-                                            )),
-                                      )),
-                                ],
-                              ),
-                              SizedBox(height: 20,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 110.0),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text( "${data[index]["start_date"]}-",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 10,
-                                            )),
-                                      )),
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 110.0),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(data[index]["end_date"],
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 10,
-                                            )),
-                                      )),
+                                              fontSize: 18)),
+                                    )),
+                                SizedBox(
+                                  height: 10,
+                                ),
 
-                                ],
-                              ),
-
-
-
-                              Padding(
-                                  padding: EdgeInsets.only(top: 120.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 5),
-                                          child: Text("Customer :",
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 70.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              "Location : ${data[index]["location"]}   || ",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 15,
                                               )),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 5),
-                                          child: IconButton(
-                                            icon: Icon(Icons.person),
-                                            onPressed: () {
-                                              getUser(
-                                                  data[index]["customer_id"]);
-                                            },
-                                          ),
-                                        ),
-                                      ],
+                                        )),
+                                    SizedBox(
+                                      width: 10,
                                     ),
-                                  )),
-
-                              //buttons
-
-                              Padding(
-                                padding: const EdgeInsets.only(top: 150.0),
-                                child: Row(
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 70.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              "Price: ${data[index]["price"]}",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                              )),
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    //house keeper
-                                    Visibility(
-                                      visible:
-                                          data[index]["state"] == "pending" &&
-                                              data[index]["housekeeper_id"] ==
-                                                  user_id,
+                                  children: [
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 110.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              "${data[index]["start_date"]}-",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 10,
+                                              )),
+                                        )),
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 110.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(data[index]["end_date"],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 10,
+                                              )),
+                                        )),
+                                  ],
+                                ),
+
+                                Padding(
+                                    padding: EdgeInsets.only(top: 120.0),
+                                    child: Align(
+                                      alignment: Alignment.center,
                                       child: Row(
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {
-                                              ApproveApp(data[index]["id"]);
-
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        'Appointments Approved !'),
-                                                    content: Text(
-                                                      "Thanks for Trusting Us !",
-                                                      style: TextStyle(
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text("Ok"),
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          Appointments()));
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Text(
-                                              'Accept',
-                                              style:
-                                                  TextStyle(color: Colors.blue),
-                                            ),
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 5),
+                                            child: Text("Customer :",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 15,
+                                                )),
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              RejectApp(data[index]["id"]);
-
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        'Appointments Rejected!'),
-                                                    content: Text(
-                                                      "Thanks for Trusting Us !",
-                                                      style: TextStyle(
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: Text("Ok"),
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          Appointments()));
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Text(
-                                              'Reject',
-                                              style:
-                                                  TextStyle(color: Colors.red),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 5),
+                                            child: IconButton(
+                                              icon: Icon(Icons.person),
+                                              onPressed: () {
+                                                getUser(
+                                                    data[index]["customer_id"]);
+                                              },
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    //customer
-                                    Visibility(
-                                      visible: data[index]["state"] ==
-                                              "pending" &&
-                                          data[index]["customer_id"] == user_id,
-                                      child: TextButton(
-                                        onPressed: () {},
+                                    )),
 
-                                        child: Text(
-                                          data[index]["state"],
-                                          style: TextStyle(color: Colors.blue),
+                                //buttons
+
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 150.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      //house keeper
+                                      Visibility(
+                                        visible:
+                                            data[index]["state"] == "pending" &&
+                                                data[index]["housekeeper_id"] ==
+                                                    user_id,
+                                        child: Row(
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                ApproveApp(data[index]["id"]);
+
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          'Appointments Approved !'),
+                                                      content: Text(
+                                                        "Thanks for Trusting Us !",
+                                                        style: TextStyle(
+                                                          color: Colors.blue,
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child: Text("Ok"),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            Appointments()));
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Text(
+                                                'Accept',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                RejectApp(data[index]["id"]);
+
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          'Appointments Rejected!'),
+                                                      content: Text(
+                                                        "Thanks for Trusting Us !",
+                                                        style: TextStyle(
+                                                          color: Colors.blue,
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child: Text("Ok"),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            Appointments()));
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Text(
+                                                'Reject',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-
-                                        //color: Colors.green,
                                       ),
-                                    ),
-
-                                    //aproved
-                                    Visibility(
-                                      visible:
-                                          data[index]["state"] == "approved",
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 5),
+                                      //customer
+                                      Visibility(
+                                        visible:
+                                            data[index]["state"] == "pending" &&
+                                                data[index]["customer_id"] ==
+                                                    user_id,
                                         child: TextButton(
                                           onPressed: () {},
 
                                           child: Text(
                                             data[index]["state"],
                                             style:
-                                                TextStyle(color: Colors.green),
+                                                TextStyle(color: Colors.blue),
                                           ),
 
                                           //color: Colors.green,
                                         ),
                                       ),
-                                    ),
-                                    //rejected
-                                    Visibility(
-                                      visible:
-                                          data[index]["state"] == "rejected",
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 5),
-                                        child: TextButton(
-                                          onPressed: () {},
 
-                                          child: Text(
-                                            data[index]["state"],
-                                            style: TextStyle(color: Colors.red),
+                                      //aproved
+                                      Visibility(
+                                        visible:
+                                            data[index]["state"] == "approved",
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 5),
+                                          child: TextButton(
+                                            onPressed: () {},
+
+                                            child: Text(
+                                              data[index]["state"],
+                                              style: TextStyle(
+                                                  color: Colors.green),
+                                            ),
+
+                                            //color: Colors.green,
                                           ),
-
-                                          //color: Colors.red,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      //rejected
+                                      Visibility(
+                                        visible:
+                                            data[index]["state"] == "rejected",
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 5),
+                                          child: TextButton(
+                                            onPressed: () {},
+
+                                            child: Text(
+                                              data[index]["state"],
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+
+                                            //color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           )));
                 });
           }
