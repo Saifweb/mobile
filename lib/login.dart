@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/ChatPage.dart';
+import 'package:mobile_project/ChatsHome.dart';
 import 'package:mobile_project/dashbord.dart';
 import 'package:mobile_project/signup.dart';
 import 'globals.dart' as globals;
@@ -172,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ForgetPassword()));
+                                builder: (context) => ChatsHome()));
                       },
                       // defining the shape
 
